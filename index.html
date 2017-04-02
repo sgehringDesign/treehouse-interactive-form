@@ -156,10 +156,16 @@
 	<script>
   	(function($){
 
-      // HANDLING JOB -----------------------------------------------------------------
+
+      // SAVE & CLEAR COLOR OPTIONS FOR LATER REPOPULATION BASED ON DESIGN SELECTION
+      const ary_ElementsShirtColors = $( "#color" ).children();
+      $( "#colors-js-puns" ).hide(); // hide section becuase we are clearing options
+      $( "#color" ).html(''); //clear options
+
 
       // SET FOCUS ON FIRST ITEM
       $('#name').focus();
+
 
       // ADD OTHER FIELD AFTER JOB TITLE HAS BEEN SELECTED AS OTHER
       $('#title').change(function() {
@@ -167,6 +173,40 @@
           $('#title').after('<input type="text" id="other-title" name="other-title" placeholder="Your Job Role" >');
         }
       });
+
+      // CLEAR 
+      $('#design').change(function() {
+        
+        const obj_DesignSelectBox = $('#design'); // Get select box
+        const int_Index = obj_DesignSelectBox[0].selectedIndex;  // Get selected index
+
+        // if index is greater then - IE if a theme is selected verse the defualt option
+        if(int_Index > 0) {  
+
+          const arr_Value = obj_DesignSelectBox[0][int_Index].innerHTML.split('-'); // split design option at "-" html to get key string to compare to color options 
+          const str_Value = arr_Value[1].trim(); // save key sting to const for later usage and trim whitespace
+          
+          // loop options in color select box
+          ary_ElementsShirtColors.each(function( index ) {
+
+             // if the select design option string exists the current looped color option then append into the color select box
+            if(this.innerHTML.indexOf(str_Value) > -1) {
+              $( "#color" ).append(this); // if you are here then it is a match and append to color select box
+            }
+
+            // show the box because there are now option aviable
+            $( "#colors-js-puns" ).show();
+
+          });
+
+        } else {
+          $( "#colors-js-puns" ).hide(); // hide section becuase we have not selected a design
+        }
+
+      });
+      
+      
+      
 
       // SET FOCUS ON FIRST ITEM
 
