@@ -156,6 +156,11 @@
 	<script>
   	(function($){
 
+      // PAGE LOAD HANDLING =====================================================================
+
+      // SET FOCUS ON FIRST ITEM
+      $('#name').focus();
+
 
       // SAVE & CLEAR COLOR OPTIONS FOR LATER REPOPULATION BASED ON DESIGN SELECTION
       const ary_ElementsShirtColors = $( "#color" ).children();
@@ -163,29 +168,49 @@
       $( "#color" ).html(''); //clear options
 
 
-      // SET FOCUS ON FIRST ITEM
-      $('#name').focus();
+      const ary_ActivityItems = $( ".activities" ).find('input');
+
+      var obj_Total = $('<fieldset/>', {'id':'total', html: '<legend>Total</legend><span id="total-value">$0</span>'});
+      $(obj_Total).hide();
+      $(obj_Total).insertAfter('.activities');
 
 
-      // ADD OTHER FIELD AFTER JOB TITLE HAS BEEN SELECTED AS OTHER
+
+      // FUNCTIONS ==================================================================
+
+      function getKeyString(str_Value, str_Divider, int_Index){
+        var arr_Value = str_Value.split(str_Divider); // split at str_Divider 
+        return arr_Value[int_Index].trim();
+      }
+
+
+
+      // FIELD EVENT HANDLING  ==================================================================
+
+
+
+      // FIELD EVENT HANDLER : ADD OTHER FIELD AFTER JOB TITLE HAS BEEN SELECTED AS OTHER
       $('#title').change(function() {
         if($('#title').val() === 'other') {
           $('#title').after('<input type="text" id="other-title" name="other-title" placeholder="Your Job Role" >');
         }
       });
 
-      // CLEAR 
+
+
+      // FIELD EVENT HANDLER : HANDLE TSHIRT DESIGN SELECTION TO SHOW COLORS BASED ON THE DESIGN
       $('#design').change(function() {
         
+        $( "#color" ).html(''); // Reset select box options
+        
         const obj_DesignSelectBox = $('#design'); // Get select box
-        const int_Index = obj_DesignSelectBox[0].selectedIndex;  // Get selected index
+        var int_Index = obj_DesignSelectBox[0].selectedIndex;  // Get selected index
 
         // if index is greater then - IE if a theme is selected verse the defualt option
         if(int_Index > 0) {  
 
-          const arr_Value = obj_DesignSelectBox[0][int_Index].innerHTML.split('-'); // split design option at "-" html to get key string to compare to color options 
-          const str_Value = arr_Value[1].trim(); // save key sting to const for later usage and trim whitespace
-          
+          var str_Value = getKeyString( obj_DesignSelectBox[0][int_Index].innerHTML , '-' , 1 );  // split design option at "-" html to get key string to compare to color options 
+
           // loop options in color select box
           ary_ElementsShirtColors.each(function( index ) {
 
@@ -201,14 +226,57 @@
 
         } else {
           $( "#colors-js-puns" ).hide(); // hide section becuase we have not selected a design
+          $( "#color" ).html('');
         }
 
       });
-      
-      
+
+
+
+      // FIELD EVENT HANDLER : 
+      $('.activities').on('change', '*', function() {
+
+        if($(this)[0].tagName === 'INPUT') {
+
+          var str_Name = $(this).attr('name');
+          var str_Value = getKeyString( $(this).parent().text() , '—' , 1 );
+          var int_Price = Number(getKeyString( $(this).parent().text() , '$' , 1 ));
+          var int_PriceCurrent = $('#total-value').html().replace("$", "");
+          var int_PriceNew;
+
+          if($(this).is(":checked")) {
+
+            int_PriceNew = '$'+ (Number(int_PriceCurrent) + int_Price);
+
+            if ( $('#total').css('display') == 'none' ){
+              $('#total').toggle();
+            }
+
+            ary_ActivityItems.each(function( index ) {
+              if($(this).attr('name') !== str_Name) {
+                if($(this).parent().text().indexOf( str_Value ) > -1) {
+                  $(this).attr("disabled", true);
+                }
+              }
+            });
+
+            $('#total-value').html(int_PriceNew);
+
+          } else {
+
+            int_PriceNew = '$'+ (Number(int_PriceCurrent) - int_Price);
+            $('#total-value').html(int_PriceNew);
+
+            ary_ActivityItems.each(function( index ) {
+              $(this).attr("disabled", false);
+            });
+          }
+        }
+
+
+      });
       
 
-      // SET FOCUS ON FIRST ITEM
 
     })(jQuery);
   </script>
