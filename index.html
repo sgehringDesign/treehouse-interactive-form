@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container">
-    
+
     <header>
       <span>Register for</span>
       <h1>Full Stack Conf</h1>
@@ -94,7 +94,7 @@
           <option value="bitcoin">Bitcoin</option>
         </select>
 
-        <div id="credit-card" class="credit-card">
+        <div id="credit-card" class="credit-card payment-option" >
 
           <div class="col-6 col">
             <label for="cc-num">Card Number:</label>
@@ -136,11 +136,11 @@
           </select> 	                  	         
         </div>
 
-        <div>
+        <div id="paypal" class="payment-option">
         	<p>If you selected the PayPal option we'll take you to Paypal's site to set up your billing information, when you click “Register” below.</p>
         </div> 
 
-        <div>
+        <div id="bitcoin" class="payment-option">
         	<p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
         </div>                  
 
@@ -163,17 +163,19 @@
 
 
       // SAVE & CLEAR COLOR OPTIONS FOR LATER REPOPULATION BASED ON DESIGN SELECTION
-      const ary_ElementsShirtColors = $( "#color" ).children();
+      var ary_ElementsShirtColors = $( "#color" ).children();
       $( "#colors-js-puns" ).hide(); // hide section becuase we are clearing options
       $( "#color" ).html(''); //clear options
 
 
-      const ary_ActivityItems = $( ".activities" ).find('input');
+      var ary_ActivityItems = $( ".activities" ).find('input');
 
       var obj_Total = $('<fieldset/>', {'id':'total', html: '<legend>Total</legend><span id="total-value">$0</span>'});
       $(obj_Total).hide();
       $(obj_Total).insertAfter('.activities');
 
+
+      var ary_PaymentOptions = $( ".payment-option" ).hide();
 
 
       // FUNCTIONS ==================================================================
@@ -272,7 +274,29 @@
             });
           }
         }
+      });
+      
 
+       // PAYMENT EVENT HANDLER : 
+      $('#payment').change(function() {
+
+        var value = $('#payment').val();
+        $(ary_PaymentOptions).hide();
+
+        if(value == 'credit card') {
+          console.log(0);
+          $(ary_PaymentOptions[0]).show();
+        } 
+
+        if(value == 'paypal') {
+          console.log(1);
+          $(ary_PaymentOptions[1]).show();
+        }
+
+        if(value == 'bitcoin') {
+          console.log(2);
+          $(ary_PaymentOptions[2]).show();
+        }
 
       });
       
