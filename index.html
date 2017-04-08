@@ -156,7 +156,7 @@
 	<script>
   	(function($){
 
-      // PAGE LOAD HANDLING =====================================================================
+      // PAGE LOAD HANDLING =====================================================================================================
 
       // SET FOCUS ON FIRST ITEM
       $('#name').focus();
@@ -168,17 +168,18 @@
       $( "#color" ).html(''); //clear options
 
 
-      var ary_ActivityItems = $( ".activities" ).find('input');
+      var ary_ActivityItems = $( ".activities" ).find('input'); //getr activity items on load
 
-      var obj_Total = $('<fieldset/>', {'id':'total', html: '<legend>Total</legend><span id="total-value">$0</span>'});
-      $(obj_Total).hide();
-      $(obj_Total).insertAfter('.activities');
-
-
-      var ary_PaymentOptions = $( ".payment-option" ).hide();
+      var obj_Total = $('<fieldset/>', {'id':'total', html: '<legend>Total</legend><span id="total-value">$0</span>'});  //create total legend
+      $(obj_Total).hide(); //hide total legend
+      $(obj_Total).insertAfter('.activities'); //insert into DOM
 
 
-      // FUNCTIONS ==================================================================
+      var ary_PaymentOptions = $( ".payment-option" ).hide(); // get and hide payment options on load
+
+
+
+      // FUNCTIONS =============================================================================================================
 
       function getKeyString(str_Value, str_Divider, int_Index){
         var arr_Value = str_Value.split(str_Divider); // split at str_Divider 
@@ -187,7 +188,7 @@
 
 
 
-      // FIELD EVENT HANDLING  ==================================================================
+      // FIELD EVENT HANDLING  ================================================================================================
 
 
 
@@ -241,38 +242,38 @@
         if($(this)[0].tagName === 'INPUT') {
 
           var str_Name = $(this).attr('name');
-          var str_Value = getKeyString( $(this).parent().text() , '—' , 1 );
-          var int_Price = Number(getKeyString( $(this).parent().text() , '$' , 1 ));
-          var int_PriceCurrent = $('#total-value').html().replace("$", "");
+          var str_Value = getKeyString( $(this).parent().text() , '—' , 1 ); // get string with out changing DOM -- Example Returns "Tuesday 9am-12pm, $100"
+          var int_Price = Number(getKeyString( $(this).parent().text() , '$' , 1 ));  // get string with out changing DOM -- Example Returns "100"
+          var int_PriceCurrent = $('#total-value').html().replace("$", ""); // get current price and remove dollar sign so it can be used as a int
           var int_PriceNew;
 
           if($(this).is(":checked")) {
 
-            int_PriceNew = '$'+ (Number(int_PriceCurrent) + int_Price);
+            int_PriceNew = '$'+ (Number(int_PriceCurrent) + int_Price); //if checked add new price
 
             if ( $('#total').css('display') == 'none' ){
-              $('#total').toggle();
+              $('#total').toggle();  //turn on the price if hidden
             }
 
             ary_ActivityItems.each(function( index ) {
               if($(this).attr('name') !== str_Name) {
                 if($(this).parent().text().indexOf( str_Value ) > -1) {
-                  $(this).attr("disabled", true);
+                  $(this).attr("disabled", true);  //disable items at the same time
                 }
               }
             });
 
-            $('#total-value').html(int_PriceNew);
-
           } else {
 
-            int_PriceNew = '$'+ (Number(int_PriceCurrent) - int_Price);
-            $('#total-value').html(int_PriceNew);
+            int_PriceNew = '$'+ (Number(int_PriceCurrent) - int_Price); //subtract price if unchecked
 
             ary_ActivityItems.each(function( index ) {
-              $(this).attr("disabled", false);
+              $(this).attr("disabled", false);  //enable any deactive checkboxes
+
             });
           }
+          
+          $('#total-value').html(int_PriceNew); //update the price
         }
       });
       
@@ -280,22 +281,19 @@
        // PAYMENT EVENT HANDLER : 
       $('#payment').change(function() {
 
-        var value = $('#payment').val();
-        $(ary_PaymentOptions).hide();
+        var value = $('#payment').val(); // get payment optoon value
+        $(ary_PaymentOptions).hide(); // hide all payment otions to reset
 
         if(value == 'credit card') {
-          console.log(0);
-          $(ary_PaymentOptions[0]).show();
+          $(ary_PaymentOptions[0]).show(); // show credit card option
         } 
 
         if(value == 'paypal') {
-          console.log(1);
-          $(ary_PaymentOptions[1]).show();
+          $(ary_PaymentOptions[1]).show(); // show paypal option
         }
 
         if(value == 'bitcoin') {
-          console.log(2);
-          $(ary_PaymentOptions[2]).show();
+          $(ary_PaymentOptions[2]).show(); // show bitcoin option
         }
 
       });
