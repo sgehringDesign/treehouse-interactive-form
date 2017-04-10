@@ -113,6 +113,46 @@ button:hover {
 	background: #184c62;
 }
 
+
+.error-input {
+  border:2px solid #d75452;
+  margin-bottom:.2em;
+  transition: border .5s;
+}
+
+.error-message {
+  border:2px solid #d75452;
+  font-size: .9em;
+  font-weight: 500; 
+  color:#d75452;
+  padding: .6em;
+  outline: none;
+  background: #f2dede;
+  margin:.5em 0 1.125em 0;
+  opacity: 0;
+  position: absolute;
+  visibility: hidden;
+  transition: opacity .1s, visibility 600ms;
+}
+
+.credit-card input {
+  margin-bottom: 1.125em;	
+}
+
+legend.error-input {
+  margin-bottom: .2em;
+  border: none;
+  border-top: 2px solid #679cb3;
+}
+
+.error-visible {
+  visibility: visible;
+  position: inherit;
+  opacity: 1;
+  transition: opacity .6s, visibility 600ms;
+}
+
+
 /* ================================= 
   Page Styles
 ==================================== */
