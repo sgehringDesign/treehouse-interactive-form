@@ -132,8 +132,9 @@
       }
 
        // Toogle Error Handling
-      function togglePlaceholder(obj_Field, str_Error, state = false) {
+      function togglePlaceholder(obj_Field, str_Error, state) {
 
+        state = typeof state !== 'undefined' ? state : false;
         var str_ErrorClassName    = 'error-input';
 
         if(state === true) {
