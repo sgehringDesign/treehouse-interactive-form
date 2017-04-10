@@ -54,7 +54,7 @@
       // Number.isInteger() is not supported until IE 12
       function isInt(value) {
         // Test for int
-        if (Number(value) === parseInt(value, 10)) { 
+        if (value == parseInt(value, 10)) { 
           return true;
         } else {
           return false;
@@ -340,6 +340,8 @@
         // if valid on change then hide exsiting error borders & messages
         if( validateCreditCard( $(this).val()) === true ) {
           togglePlaceholder($(this), '', false);
+        } else {
+          togglePlaceholder($(this), 'Please enter Credit Card', true);
         }
 
       });
@@ -350,6 +352,8 @@
         // if valid on change then hide exsiting error borders & messages
         if( validateZip($(this).val()) === true ) {
           togglePlaceholder($(this), '', false);
+        } else {
+          togglePlaceholder($(this), 'Please enter Zip code', true);
         }
       });
 
@@ -359,6 +363,8 @@
         // if valid on change then hide exsiting error borders & messages
         if( validateCVV( $(this).val()) === true ) {
           togglePlaceholder($(this), '', false);
+        } else {
+          togglePlaceholder($(this), 'Please enter CVV code', true);
         }
       });
 
