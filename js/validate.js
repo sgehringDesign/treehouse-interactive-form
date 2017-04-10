@@ -117,8 +117,8 @@
 
 
       // Toogle Error Handling
-      function toggleError(obj_Field, obj_Error,  state = false) {
-
+      function toggleError(obj_Field, obj_Error,  state) {
+        state = typeof state !== 'undefined' ? state : false;
         var str_ErrorClassName    = 'error-input';
         var str_ErrorMsgClassName = 'error-visible';
 
